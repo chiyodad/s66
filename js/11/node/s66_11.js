@@ -31,19 +31,19 @@ const FakeAuctionServer = class{
 		this.server = null;
 		this.item = item;
 		this.url = 'http://127.0.0.1:8080';
-		this.messager = new MessageListener();
+		this.listener = new MessageListener();
 	}
 	getItemId(){
 		return this.item;
 	}
 	startSellingItem(){
-		if(!this.server) this.server = http.createServer(this.messager.listener).listen(8080);
+		if(!this.server) this.server = http.createServer(this.listener.listener).listen(8080);
 	}
 	hasReceivedJoin(){
-		return this.messager.isJoined;
+		return this.listener.isJoined;
 	}
 	announceClosed(){
-		this.messager.processMessage('');
+		this.listener.processMessage('');
 	}
 	stop(){
 		this.server.close();
@@ -57,7 +57,7 @@ const test = {
 	start(){
 		auction = new FakeAuctionServer('item-54321');
 		client = new Worker(
-			'http://projectBS.github.io/s66/js/11/', 
+			'http://www.bsidesoft.com/hika/s66/11/', 
 			_=>{
 				auction.startSellingItem();
 				client.js('runner = new Runner()').
