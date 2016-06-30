@@ -18,19 +18,6 @@ const Connection =(_=>{
 		}
 	};
 })();
-const MainWindow = class{
-	static get STATUS_BIDDING(){return 'bid';}
-	static get STATUS_LOST(){return 'lost';}
-	constructor(){
-		const frame = document.body.appendChild(document.createElement('div'));
-		frame.style.cssText = 'background:#ff0;border:1px solid #000;border-radius:5px';
-		this.sniperStatus = frame.appendChild(document.createElement('div'));
-		this.sniperStatus.id = 'sniperStatus';
-	}
-	showStatus(status){
-		this.sniperStatus.innerHTML = status;
-	}
-}
 const AuctionMessageTranslator = class{
 	constructor(listener){
 		this.listener = listener;
@@ -43,6 +30,19 @@ const AuctionMessageTranslator = class{
 			data[1] = parseFloat(data[1]);
 			this.listener.currentPrice(...data);
 		}
+	}
+};
+const MainWindow = class{
+	static get STATUS_BIDDING(){return 'bid';}
+	static get STATUS_LOST(){return 'lost';}
+	constructor(){
+		const frame = document.body.appendChild(document.createElement('div'));
+		frame.style.cssText = 'background:#ff0;border:1px solid #000;border-radius:5px';
+		this.sniperStatus = frame.appendChild(document.createElement('div'));
+		this.sniperStatus.id = 'sniperStatus';
+	}
+	showStatus(status){
+		this.sniperStatus.innerHTML = status;
 	}
 };
 const Main = class{
