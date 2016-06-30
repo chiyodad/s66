@@ -6,16 +6,12 @@ const type = {'Content-Type': 'text/html'};
 
 const MessageListener = class{
 	constructor(){
-		this.received = '';
-		this.join = '';
-		this.bid = '';
 		this.queue = [];
 		this.listener = (request, response)=>{
 			const path = url.parse(request.url).path;
 			this.received = path;
-			let result = '';
 			response.writeHead(200, type);
-			
+			let result = '';
 			if(this.queue.length) result = this.queue.pop();
 			response.end(`Connection.callback('${result}')`);
 		};
@@ -55,7 +51,6 @@ const FakeAuctionServer = class{
 		return this.item;
 	}
 	receivesAMessageMatching(matcher, ...arg){
-		console.log('ma',this.listener.receivesAMessage());
 		return matcher.result(this.listener.receivesAMessage(), ...arg);
 	}
 	startSellingItem(){
