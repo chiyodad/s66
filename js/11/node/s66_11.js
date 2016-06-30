@@ -57,7 +57,7 @@ const test = {
 	start(){
 		auction = new FakeAuctionServer('item-54321');
 		client = new Worker(
-			'http://projectBS.bsidesoft.io/s66/js/11/', 
+			'http://projectBS.github.io/s66/js/11/', 
 			_=>{
 				auction.startSellingItem();
 				client.js('runner = new Runner()').
