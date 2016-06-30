@@ -9,7 +9,6 @@
 	let KEY = '';
 	const trap = {
 		get(target, key, trap){
-			console.log(key);
 			KEY = key;
 			return key[0] == '_' ? listener[key] : listener._logger;
 		}
