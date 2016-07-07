@@ -32,7 +32,7 @@ const MainWindow = class{
 	showStatus(status){
 		this.sniperStatus.innerHTML = status;
 	}
-}
+};
 const Main = class{
 	constructor(sniperId, itemId){
 		this.sniperId = sniperId;

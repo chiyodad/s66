@@ -33,6 +33,7 @@ const AuctionMessageTranslator = class{
 	}
 };
 const MainWindow = class{
+	static get STATUS_JOINING(){return 'join';}
 	static get STATUS_BIDDING(){return 'bid';}
 	static get STATUS_LOST(){return 'lost';}
 	constructor(){
