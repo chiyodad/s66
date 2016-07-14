@@ -31,8 +31,7 @@ const AuctionMessageTranslator = class{
 		const e = AuctionEvent.from(message);
 		switch(e.type){
 		case'close':this.listener.auctionClosed(); break;
-		case'price':this.listener.currentPrice(e.currenPrice, e.increment,
-			e.isFrom(this.sniperId)); break;
+		case'price':this.listener.currentPrice(e.currenPrice, e.increment, e.isFrom(this.sniperId)); break;
 		}
 	}
 };
@@ -55,9 +54,7 @@ const AuctionEvent = class{
 	isFrom(sniperId){
 		return sniperId == this.bidder ? PriceSource.FromSniper : PriceSource.FromOtherBidder;
 	}
-	
 };
-
 const AuctionSniper = class{
 	constructor(auction, sniperListener){
 		this.isWinning = false;
@@ -97,7 +94,47 @@ const XMPPAuction = class{
 		Connection.connection(msg, this.callback);
 	}
 };
+const Table = class{
+	constructor(){
+		
+	}
+	getColumeCount(){
+		return 1;
+	}
+	getRowCount(){
+		return 1;
+	}
+	getValueAt(rowIndex, columIndex){
+		return this.statusText;
+	}
+	setStatusText(status){
+		this.statusText = status;
+		this.render();
+	}
+	setTable(table){
+		this.table = table;
+	}
+	render(){
+		if(!this.table) return;
+		//clear
+		const rows = this.table.querySelectorAll('tr');
+		let i = rows.length, j;
+		console.log(i);
+		while(i--) this.table.removeChild(rows[i]);
+		//render
+		for(i = 0; i < this.getRowCount(); i++){
+			const row = this.table.appendChild(document.createElement('tr'));
+			for(j = 0; j < this.getColumeCount(); j++){
+				const cell = row.appendChild(document.createElement('td'));
+				cell.innerHTML = this.getValueAt(i, j);
+			}
+		}
+	}
+};
 const MainWindow = class{
+	static get MAIN_WINDOW_NAME(){return '<h1>AuctionSniper</h1>';}
+	static get SNIPERS_TABLE_NAME(){return 'SnipersTable';}
+	
 	static get STATUS_JOINING(){return 'join';}
 	static get STATUS_BIDDING(){return 'bid';}
 	static get STATUS_LOST(){return 'lost';}
@@ -105,13 +142,34 @@ const MainWindow = class{
 	static get STATUS_WON(){return 'won';}
 	
 	constructor(){
-		const frame = document.body.appendChild(document.createElement('div'));
-		frame.style.cssText = 'background:#ff0;border:1px solid #000;border-radius:5px';
-		this.sniperStatus = frame.appendChild(document.createElement('div'));
-		this.sniperStatus.id = 'sniperStatus';
+		this.snipers = new Table();
+		
+		this.frame = document.body.appendChild(document.createElement('div'));
+		this.frame.style.cssText = 'background:#ff0;border:1px solid #000;border-radius:5px;margin:5px 10px 50px 10px';
+
+		this.title = this.frame.appendChild(document.createElement('div'));
+		this.title.innerHTML = MainWindow.MAIN_WINDOW_NAME;
+		
+		this.fillContentPane(this.makeSnipersTable());
+	}
+	fillContentPane(table){
+		this.snipers.setTable(table);
+		this.snipers.render();
+	}
+	makeSnipersTable(){
+		let snipersTable = this.frame.querySelector('table');
+		if(!snipersTable){
+			snipersTable = this.frame.appendChild(document.createElement('table'));
+			snipersTable.id = 'snipersTable';
+			snipersTable.cellspacing = 0;
+			snipersTable.style.cssText = 'border:1px solid #000;background:#fff;margin:10px';
+			const caption = snipersTable.appendChild(document.createElement('caption'));
+			caption.innerHTML = MainWindow.SNIPERS_TABLE_NAME;
+		}
+		return snipersTable;
 	}
 	showStatus(status){
-		this.sniperStatus.innerHTML = status;
+		this.snipers.setStatusText(status);
 	}
 };
 const SniperStateDisplayer = class{
@@ -152,7 +210,7 @@ const Driver = class{
 		this.main = main;
 	}
 	showSniperStatus(statusText){
-		return document.getElementById('sniperStatus').innerHTML.includes(statusText);
+		return document.getElementById('snipersTable').innerHTML.includes(statusText);
 	}
 };
 const Runner = class{

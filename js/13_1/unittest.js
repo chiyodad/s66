@@ -22,7 +22,7 @@
 		const sniperListener = new Mock();
 		const auction = new Mock();
 		const sniper = new AuctionSniper(auction, sniperListener);
-		bsTest('reportsLostWhenActionCloses',
+		bsTest('reportsLostWhenAuctionCloses',
 			_=>{
 				sniper.auctionClosed();
 				const log = sniperListener._sniperLost;

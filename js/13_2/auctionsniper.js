@@ -96,7 +96,7 @@ const SniperStateDisplayer= class{
 		this.ui = ui;
 	}
 	sniperBidding(){
-		this.showStatus(`${MainWindow.STATUS_BIDDING}`);
+		this.showStatus(MainWindow.STATUS_BIDDING);
 	}
 	sniperLost(){
 		this.showStatus(MainWindow.STATUS_LOST);
